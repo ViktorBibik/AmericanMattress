@@ -63,10 +63,6 @@ public class MainClassAmericanmattress {
         addToCartProduct.fieldQty.sendKeys(Keys.RETURN);
         addToCartProduct.addToCart.click();
 
-        Thread.sleep(2000);
-        String body = driver.findElement(By.xpath("//div[@class='col-xs-30']//span[@data-bind='text: orderItemCount']")).getText();
-        Assert.assertEquals(body, "1 item");
-
         File file= new File("browser.data");
         try{
             file.delete();
@@ -92,5 +88,9 @@ public class MainClassAmericanmattress {
         catch (Exception ex) {
             ex.printStackTrace();
         }
+
+        Thread.sleep(2000);
+        String body = driver.findElement(By.xpath("//div[@class='col-xs-30']//span[@data-bind='text: orderItemCount']")).getText();
+        Assert.assertEquals(body, "1 item");
     }
 }
