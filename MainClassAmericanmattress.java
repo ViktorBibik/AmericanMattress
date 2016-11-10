@@ -4,6 +4,8 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import org.testng.annotations.BeforeClass;
@@ -32,7 +34,6 @@ public class MainClassAmericanmattress {
         FirefoxProfile firefoxProfile = new FirefoxProfile();
         firefoxProfile.setPreference("reader.parse-on-load.enabled",false);
         driver = new FirefoxDriver(firefoxProfile);
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 
     @Test
@@ -49,7 +50,8 @@ public class MainClassAmericanmattress {
         Thread.sleep(2000);
         mainPage.dropdownToggleFURNITURE.click();
         furnitureElements.linkMetalBad.click();
-        Thread.sleep(2000);
+        //Thread.sleep(2000);
+        ImplicitWait(driver);
         storeFurniturePage.linkFentonBedProduct.click();
 
 
@@ -92,5 +94,8 @@ public class MainClassAmericanmattress {
         Thread.sleep(2000);
         String body = driver.findElement(By.xpath("//div[@class='col-xs-30']//span[@data-bind='text: orderItemCount']")).getText();
         Assert.assertEquals(body, "1 item");
+    }
+    public static void ImplicitWait(WebDriver driver){
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
     }
 }
