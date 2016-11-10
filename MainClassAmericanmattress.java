@@ -14,13 +14,14 @@ import org.testng.annotations.Test;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Victor on 10.11.2016.
  */
 public class MainClassAmericanmattress {
-    public WebDriver driver;
+    public static WebDriver driver;
 
     @FindBy(xpath = "//div[@class='cart-box']//input[@class='cart-quantity']")
     public WebElement cartQuantity;
@@ -65,37 +66,27 @@ public class MainClassAmericanmattress {
         addToCartProduct.fieldQty.sendKeys(Keys.RETURN);
         addToCartProduct.addToCart.click();
 
-        File file= new File("browser.data");
-        try{
-            file.delete();
-            file.createNewFile();
-            FileWriter filewriter = new FileWriter(file);
-            BufferedWriter bufwriter = new BufferedWriter(filewriter);
-
-            for(Cookie ck : driver.manage().getCookies()){
-                bufwriter.write(( ck.getName() + ";"
-                        +ck.getValue() + ";"
-                        +ck.getDomain() + ";"
-                        +ck.getPath() + ";"
-                        +ck.getExpiry() + ";"
-                        +ck.getName() + ";"
-                        +ck.isSecure()));
-                System.out.println(ck);
-                bufwriter.newLine();
-            }
-            bufwriter.flush();
-            bufwriter.close();
-            filewriter.close();
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        getCookies();
 
         Thread.sleep(2000);
         String body = driver.findElement(By.xpath("//div[@class='col-xs-30']//span[@data-bind='text: orderItemCount']")).getText();
         Assert.assertEquals(body, "1 item");
     }
+
     public static void ImplicitWait(WebDriver driver){
+
         driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+    }
+
+    public static void getCookies(){
+
+        Set<Cookie> cookies = driver.manage().getCookies();
+        System.out.println("Size of Cookies :" + cookies.size());
+
+        for(Cookie cookie:cookies){
+            System.out.println(cookie.getName() + ": " + cookie.getValue()+ ": " + cookie.getDomain()+ ": " + cookie.getExpiry()+ ": " + cookie.getPath());
+        }
+        driver.manage().deleteAllCookies();
+        System.out.println("Size of Cookies :" + cookies.size());
     }
 }
